@@ -1,5 +1,3 @@
-#include "RequestValidators.h"
-
 redisContext* CreateRedisInstance()
 {
     redisContext* context = redisConnect("127.0.0.1",6379);
