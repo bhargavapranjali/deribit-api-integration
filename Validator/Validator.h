@@ -1,6 +1,6 @@
 #pragma once 
 
-#include "Validator.h"
+#include "RequestValidator.h"
 #include "AuthValidator/AuthRequestValidator.h"
 #include "CancelOrderValidator/CancelOrderRequestValidator.h"
 #include "CreateOrderValidator/CreateOrderRequestValidator.h"
