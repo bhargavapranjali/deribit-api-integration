@@ -1,5 +1,3 @@
-#include "RequestValidators.h"
-
 pplx::task<json::value> handleOperation(http_request request, const string& operation, json::value requestBodyJson, string access_token)
 {
     if(operation == "create")

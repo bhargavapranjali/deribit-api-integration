@@ -1,5 +1,5 @@
 #include "utils.h"
-#include "Controllers/RequestValidators.h"
+#include "Validator/Validator.h"
 #include "Controllers/OrderRequestHandler.h"
 #include "Controllers/AuthRequestHandler.h"
 #include "Controllers/PositionRequestHandler.h"
@@ -34,7 +34,7 @@ int main()
     listener
         .open()
         .then([&listener](){
-            cout<<"Listening to: "<<listener.uri().to_string()<<"\n";
+            cout<<"Listening to url: "<<listener.uri().to_string()<<"\n";
         })
         .wait();
 

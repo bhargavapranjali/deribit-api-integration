@@ -57,23 +57,19 @@ void handleAuth(http_request request)
     
     if(replyStr)
     {
-        cout<<"I am here\n";
         json::value jsonData = json::value::parse(replyStr);
 
-        cout<<jsonData.serialize()<<"\n";
         //if expires_in is less than current time return else call api and cache the access token and refresh token
         string access_token = jsonData[U("access_token")].as_string();
         string refresh_token = jsonData[U("refresh_token")].as_string();
         int startTime = jsonData[U("startTime")].as_integer();
         int expires_in = jsonData[U("expires_in")].as_integer();
 
-        cout<<"got json\n";
         auto current_time = system_clock::now();
         auto epoch_time = duration_cast<seconds>(current_time.time_since_epoch()).count();
         cout<<"AuthRequestHandler::handleAuth Is token expired? "<<(startTime+expires_in > epoch_time ? "false" : "true") << "\n";
 
         if(startTime+expires_in>epoch_time) {
-            cout<<access_token<<"\n";
             request.reply(status_codes::OK, jsonData);
             return;
         }
