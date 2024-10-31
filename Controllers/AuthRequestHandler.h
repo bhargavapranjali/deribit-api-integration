@@ -82,10 +82,13 @@ void handleAuth(http_request request)
     http_client client(uri.to_uri());
 
     sendDeribitRequest(uri,"")
-        .then([context,clientId,clientSecret,request](web::json::value json_response) {
-
+        .then([context,clientId,clientSecret,request](web::json::value json_response) 
+        {
             if(!json_response.has_field(U("result")))
+            {
                 request.reply(status_codes::BadRequest, json_response);
+                return;
+            }
 
             //Extract values to store in redis cache
             json::value result = json_response[U("result")];
