@@ -11,16 +11,28 @@ void handleRequest(http_request request) {
     if(request.method()!=methods::POST)
         request.reply(status_codes::NotFound, U("Not Found"));
 
-    if(path == U("/auth"))
-        handleAuth(request);
-    else if(path == U("/order"))
-        handleOrder(request, request.relative_uri().query());
-    else if(path == U("/getOrderBook"))
-        handleGetOrderBook(request);
-    else if(path == U("/getPositions"))
-        handleGetPositions(request);
-    else
-        request.reply(status_codes::NotFound, U("Url not Found"));
+    try {
+        if(path == U("/auth"))
+            handleAuth(request);
+        else if(path == U("/order"))
+            handleOrder(request, request.relative_uri().query());
+        else if(path == U("/getOrderBook"))
+            handleGetOrderBook(request);
+        else if(path == U("/getPositions"))
+            handleGetPositions(request);
+        else
+            request.reply(status_codes::NotFound, U("Url not Found"));
+    }
+    catch(const json::json_exception& exception)
+    {
+        request.reply(status_codes::InternalError, U(exception.what()));
+    }
+    catch(const std::exception& exception) {
+        request.reply(status_codes::InternalError, U(exception.what()));
+    }
+    catch(...) {
+        request.reply(status_codes::InternalError, U("An exception occurred at backend"));
+    }
 }
 
 int main()
