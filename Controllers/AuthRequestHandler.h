@@ -59,7 +59,6 @@ void handleAuth(http_request request)
 
         //if expires_in is less than current time return else call api and cache the access token and refresh token
         string access_token = jsonData[U("access_token")].as_string();
-        string refresh_token = jsonData[U("refresh_token")].as_string();
         int startTime = jsonData[U("startTime")].as_integer();
         int expires_in = jsonData[U("expires_in")].as_integer();
 
@@ -87,15 +86,11 @@ void handleAuth(http_request request)
 
             //Extract values to store in redis cache
             json::value result = json_response[U("result")];
-            string refresh_token = result[U("refresh_token")].as_string();
-            string access_token = result[U("access_token")].as_string();
-            int expires_in = result[U("expires_in")].as_integer();
 
             //Create json object to cache corresponding to key "{client_id}_{client_secret}"
             json::value valueData;
-            valueData[U("access_token")] = json::value::string(access_token);
-            valueData[U("refresh_token")] = json::value::string(refresh_token);
-            valueData[U("expires_in")] = json::value::number(expires_in);
+            valueData[U("access_token")] = result[U("access_token")];
+            valueData[U("expires_in")] = result[U("expires_in")];
 
             // Get the current time as a UNIX timestamp
             auto current_time = system_clock::now();
